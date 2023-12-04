@@ -30,36 +30,41 @@ func hasSymbolAround(input []string, x int, y1 int, y2 int) bool {
 	return isSymbolIndexSafe(x, y1-1) || isSymbolIndexSafe(x, y2+1)
 }
 
-func GearRatios1() int {
-	problem := utils.Problem{InputFileName: "solutions/day3/input.txt"}
-	input := problem.ReadInputToLines()
-	result := 0
+func GearRatios1() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day3/input.txt",
+		Solver: func(input []string) string {
+			result := 0
 
-	for index, line := range input {
-		for it := 0; it < len(line); it++ {
-			if unicode.IsDigit(rune(line[it])) {
-				var numberStr string
-				y1 := it
-				y2 := it
-				for y2 < len(line) && unicode.IsDigit(rune(line[y2])) {
-					numberStr += string(line[y2])
-					y2++
-				}
+			for index, line := range input {
+				for it := 0; it < len(line); it++ {
+					if unicode.IsDigit(rune(line[it])) {
+						var numberStr string
+						y1 := it
+						y2 := it
+						for y2 < len(line) && unicode.IsDigit(rune(line[y2])) {
+							numberStr += string(line[y2])
+							y2++
+						}
 
-				it = y2
+						it = y2
 
-				if hasSymbolAround(input, index, y1, y2-1) {
-					num, err := strconv.Atoi(numberStr)
+						if hasSymbolAround(input, index, y1, y2-1) {
+							num, err := strconv.Atoi(numberStr)
 
-					if err != nil {
-						return -1
+							if err != nil {
+								return "-1"
+							}
+
+							result += num
+						}
 					}
-
-					result += num
 				}
 			}
-		}
+
+			return utils.FromIntToString(result)
+		},
 	}
 
-	return result
+	return problem.Solve()
 }

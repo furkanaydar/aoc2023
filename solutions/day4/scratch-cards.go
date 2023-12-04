@@ -50,43 +50,53 @@ func applyToMatchingNumbersForEveryCard(inputLines []string, calculate func(int,
 	}
 }
 
-func ScratchCards1() int {
-	problem := utils.Problem{InputFileName: "solutions/day4/input.txt"}
-	inputLines := problem.ReadInputToLines()
-	result := 0
+func ScratchCards1() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day4/input.txt",
+		Solver: func(input []string) string {
+			result := 0
 
-	resultCalculator := func(_ int, matches int) {
-		if matches > 0 {
-			result += int(math.Pow(2, float64(matches-1)))
-		}
+			resultCalculator := func(_ int, matches int) {
+				if matches > 0 {
+					result += int(math.Pow(2, float64(matches-1)))
+				}
+			}
+
+			applyToMatchingNumbersForEveryCard(input, resultCalculator)
+			return utils.FromIntToString(result)
+		},
 	}
 
-	applyToMatchingNumbersForEveryCard(inputLines, resultCalculator)
-	return result
+	return problem.Solve()
 }
 
-func ScratchCards2() int {
-	problem := utils.Problem{InputFileName: "solutions/day4/input.txt"}
-	inputLines := problem.ReadInputToLines()
-	cardCounts := make(map[int]int)
+func ScratchCards2() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day4/input.txt",
+		Solver: func(input []string) string {
+			cardCounts := make(map[int]int)
 
-	for i := 1; i <= len(inputLines); i++ {
-		cardCounts[i] = 1
+			for i := 1; i <= len(input); i++ {
+				cardCounts[i] = 1
+			}
+
+			resultCalculator := func(index int, matches int) {
+				for i := index + 2; i <= index+1+matches; i++ {
+					cur := cardCounts[i]
+					cardCounts[i] = cur + cardCounts[index+1]
+				}
+			}
+
+			applyToMatchingNumbersForEveryCard(input, resultCalculator)
+
+			result := 0
+			for _, val := range cardCounts {
+				result += val
+			}
+
+			return utils.FromIntToString(result)
+		},
 	}
 
-	resultCalculator := func(index int, matches int) {
-		for i := index + 2; i <= index+1+matches; i++ {
-			cur := cardCounts[i]
-			cardCounts[i] = cur + cardCounts[index+1]
-		}
-	}
-
-	applyToMatchingNumbersForEveryCard(inputLines, resultCalculator)
-
-	result := 0
-	for _, val := range cardCounts {
-		result += val
-	}
-
-	return result
+	return problem.Solve()
 }

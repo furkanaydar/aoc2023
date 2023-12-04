@@ -40,45 +40,49 @@ func solveForNumber(input []string, x int, y1 int, y2 int, stars map[utils.Cell]
 	}
 }
 
-func GearRatios2() int {
-	problem := utils.Problem{InputFileName: "solutions/day3/input.txt"}
-	input := problem.ReadInputToLines()
+func GearRatios2() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day3/input.txt",
+		Solver: func(input []string) string {
+			stars := make(map[utils.Cell][]int)
 
-	stars := make(map[utils.Cell][]int)
+			for x, line := range input {
+				for y := 0; y < len(line); y++ {
+					if unicode.IsDigit(rune(line[y])) {
+						it := y
+						var numberStr string
 
-	for x, line := range input {
-		for y := 0; y < len(line); y++ {
-			if unicode.IsDigit(rune(line[y])) {
-				it := y
-				var numberStr string
+						for it < len(line) && unicode.IsDigit(rune(line[it])) {
+							numberStr += string(line[it])
+							it++
+						}
 
-				for it < len(line) && unicode.IsDigit(rune(line[it])) {
-					numberStr += string(line[it])
-					it++
+						actualNumber, err := strconv.Atoi(numberStr)
+
+						if err == nil {
+							solveForNumber(input, x, y, it-1, stars, actualNumber)
+						}
+
+						y = it
+					}
 				}
-
-				actualNumber, err := strconv.Atoi(numberStr)
-
-				if err == nil {
-					solveForNumber(input, x, y, it-1, stars, actualNumber)
-				}
-
-				y = it
 			}
-		}
+
+			result := 0
+
+			for key := range stars {
+				if len(stars[key]) > 1 {
+					ratio := 1
+					for _, val := range stars[key] {
+						ratio *= val
+					}
+					result += ratio
+				}
+			}
+
+			return utils.FromIntToString(result)
+		},
 	}
 
-	result := 0
-
-	for key := range stars {
-		if len(stars[key]) > 1 {
-			ratio := 1
-			for _, val := range stars[key] {
-				ratio *= val
-			}
-			result += ratio
-		}
-	}
-
-	return result
+	return problem.Solve()
 }

@@ -2,7 +2,6 @@ package day1
 
 import (
 	"AdventOfCode2023/solutions/utils"
-	"fmt"
 	"strings"
 )
 
@@ -71,41 +70,40 @@ func captureLastDigit(line string) int {
 	return asTextValue
 }
 
-func TrebuchetPart1() int {
-	problem := utils.Problem{InputFileName: "solutions/day1/input.txt"}
-	input := problem.ReadInputToLines()
+func TrebuchetPart1() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day1/input.txt",
+		Solver: func(input []string) string {
+			result := 0
 
-	if input == nil {
-		return -1
+			for _, line := range input {
+				first, _ := captureFirstDigitIndexFromDigit(line)
+				last, _ := captureLastDigitIndexFromDigit(line)
+				result += int(first)*10 + int(last)
+			}
+
+			return utils.FromIntToString(result)
+		},
 	}
 
-	result := 0
-
-	for _, line := range input {
-		first, _ := captureFirstDigitIndexFromDigit(line)
-		last, _ := captureLastDigitIndexFromDigit(line)
-		result += int(first)*10 + int(last)
-	}
-
-	return result
+	return problem.Solve()
 }
 
-func TrebuchetPart2() int {
-	problem := utils.Problem{InputFileName: "solutions/day1/input.txt"}
-	input := problem.ReadInputToLines()
+func TrebuchetPart2() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day1/input.txt",
+		Solver: func(input []string) string {
+			result := 0
 
-	if input == nil {
-		fmt.Println("Could not read input file.")
-		return -1
+			for _, line := range input {
+				first := captureFirstDigit(line)
+				last := captureLastDigit(line)
+				result += int(first)*10 + last
+			}
+
+			return utils.FromIntToString(result)
+		},
 	}
 
-	result := 0
-
-	for _, line := range input {
-		first := captureFirstDigit(line)
-		last := captureLastDigit(line)
-		result += int(first)*10 + last
-	}
-
-	return result
+	return problem.Solve()
 }

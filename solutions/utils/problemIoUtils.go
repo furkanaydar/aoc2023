@@ -8,9 +8,14 @@ import (
 
 type Problem struct {
 	InputFileName string
+	Solver        func([]string) string
 }
 
-func (problem *Problem) ReadInputToLines() []string {
+func (problem *Problem) Solve() string {
+	return problem.Solver(problem.readInputToLines())
+}
+
+func (problem *Problem) readInputToLines() []string {
 	file, err := os.Open(problem.InputFileName)
 
 	if err != nil {

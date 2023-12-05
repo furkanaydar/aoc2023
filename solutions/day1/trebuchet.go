@@ -5,6 +5,44 @@ import (
 	"strings"
 )
 
+func TrebuchetPart1() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day1/input.txt",
+		Solver: func(input []string) string {
+			result := 0
+
+			for _, line := range input {
+				first, _ := captureFirstDigitIndexFromDigit(line)
+				last, _ := captureLastDigitIndexFromDigit(line)
+				result += int(first)*10 + int(last)
+			}
+
+			return utils.FromIntToString(result)
+		},
+	}
+
+	return problem.Solve()
+}
+
+func TrebuchetPart2() string {
+	problem := utils.Problem{
+		InputFileName: "solutions/day1/input.txt",
+		Solver: func(input []string) string {
+			result := 0
+
+			for _, line := range input {
+				first := captureFirstDigit(line)
+				last := captureLastDigit(line)
+				result += int(first)*10 + last
+			}
+
+			return utils.FromIntToString(result)
+		},
+	}
+
+	return problem.Solve()
+}
+
 const chars = "0123456789"
 
 var digitTexts = []string{"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
@@ -68,42 +106,4 @@ func captureLastDigit(line string) int {
 	}
 
 	return asTextValue
-}
-
-func TrebuchetPart1() string {
-	problem := utils.Problem{
-		InputFileName: "solutions/day1/input.txt",
-		Solver: func(input []string) string {
-			result := 0
-
-			for _, line := range input {
-				first, _ := captureFirstDigitIndexFromDigit(line)
-				last, _ := captureLastDigitIndexFromDigit(line)
-				result += int(first)*10 + int(last)
-			}
-
-			return utils.FromIntToString(result)
-		},
-	}
-
-	return problem.Solve()
-}
-
-func TrebuchetPart2() string {
-	problem := utils.Problem{
-		InputFileName: "solutions/day1/input.txt",
-		Solver: func(input []string) string {
-			result := 0
-
-			for _, line := range input {
-				first := captureFirstDigit(line)
-				last := captureLastDigit(line)
-				result += int(first)*10 + last
-			}
-
-			return utils.FromIntToString(result)
-		},
-	}
-
-	return problem.Solve()
 }

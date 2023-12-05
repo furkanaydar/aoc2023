@@ -12,7 +12,7 @@ type Cell struct {
 func FromStringToInt(input string) int {
 	result, err := strconv.Atoi(input)
 
-	if err != nil {
+	if err == nil {
 		return result
 	}
 

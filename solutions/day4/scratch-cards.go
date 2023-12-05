@@ -7,49 +7,6 @@ import (
 	"strings"
 )
 
-func filterNumbers(input []string) []int {
-	var result []int
-	for _, numbersStr := range input {
-		if strings.TrimSpace(numbersStr) != "" {
-			numberAsInt, err := strconv.Atoi(numbersStr)
-			if err == nil {
-				result = append(result, numberAsInt)
-			}
-		}
-	}
-
-	return result
-}
-
-func getSelectedAndWinningNumbers(line string) ([]int, []int) {
-	numbersStartingAt := strings.Index(line, ": ") + 2
-	numbers := strings.Split(line[numbersStartingAt:], "|")
-	selectedNumbersFiltered := filterNumbers(strings.Split(numbers[0], " "))
-	winningNumbersFiltered := filterNumbers(strings.Split(numbers[1], " "))
-	return selectedNumbersFiltered, winningNumbersFiltered
-}
-
-func applyToMatchingNumbersForEveryCard(inputLines []string, calculate func(int, int)) {
-	for index, line := range inputLines {
-		selectedNumbers, winningNumbers := getSelectedAndWinningNumbers(line)
-		winningNumberSet := make(map[int]bool)
-
-		for _, winningNumber := range winningNumbers {
-			winningNumberSet[winningNumber] = true
-		}
-
-		matches := 0
-
-		for _, selectedNumber := range selectedNumbers {
-			if winningNumberSet[selectedNumber] {
-				matches++
-			}
-		}
-
-		calculate(index, matches)
-	}
-}
-
 func ScratchCards1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day4/input.txt",
@@ -99,4 +56,47 @@ func ScratchCards2() string {
 	}
 
 	return problem.Solve()
+}
+
+func applyToMatchingNumbersForEveryCard(inputLines []string, calculate func(int, int)) {
+	for index, line := range inputLines {
+		selectedNumbers, winningNumbers := getSelectedAndWinningNumbers(line)
+		winningNumberSet := make(map[int]bool)
+
+		for _, winningNumber := range winningNumbers {
+			winningNumberSet[winningNumber] = true
+		}
+
+		matches := 0
+
+		for _, selectedNumber := range selectedNumbers {
+			if winningNumberSet[selectedNumber] {
+				matches++
+			}
+		}
+
+		calculate(index, matches)
+	}
+}
+
+func getSelectedAndWinningNumbers(line string) ([]int, []int) {
+	numbersStartingAt := strings.Index(line, ": ") + 2
+	numbers := strings.Split(line[numbersStartingAt:], "|")
+	selectedNumbersFiltered := filterNumbers(strings.Split(numbers[0], " "))
+	winningNumbersFiltered := filterNumbers(strings.Split(numbers[1], " "))
+	return selectedNumbersFiltered, winningNumbersFiltered
+}
+
+func filterNumbers(input []string) []int {
+	var result []int
+	for _, numbersStr := range input {
+		if strings.TrimSpace(numbersStr) != "" {
+			numberAsInt, err := strconv.Atoi(numbersStr)
+			if err == nil {
+				result = append(result, numberAsInt)
+			}
+		}
+	}
+
+	return result
 }

@@ -13,50 +13,6 @@ type ColorCount struct {
 	Red   int
 }
 
-func parseGame(line string) []ColorCount {
-	startIndex := strings.Index(line, ": ") + 2
-	line = line[startIndex:]
-	sliced := strings.Split(line, "; ")
-	result := make([]ColorCount, len(sliced))
-
-	for tryIndex, colors := range sliced {
-		pickedColors := strings.Split(colors, ",")
-
-		for _, countAndColor := range pickedColors {
-			countAndColor = strings.TrimLeft(countAndColor, " ")
-
-			countAndColorArr := strings.Split(countAndColor, " ")
-			pickedCount, err := strconv.Atoi(countAndColorArr[0])
-			pickedColor := countAndColorArr[1]
-
-			if err != nil {
-				fmt.Println(err)
-				return nil
-			}
-
-			if pickedColor == "red" {
-				result[tryIndex].Red = pickedCount
-			} else if pickedColor == "blue" {
-				result[tryIndex].Blue = pickedCount
-			} else {
-				result[tryIndex].Green = pickedCount
-			}
-		}
-	}
-
-	return result
-}
-
-func parseGames(input []string) [][]ColorCount {
-	allGames := make([][]ColorCount, len(input))
-
-	for index, game := range input {
-		allGames[index] = parseGame(game)
-	}
-
-	return allGames
-}
-
 func CubeConundrum1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day2/input.txt",
@@ -120,4 +76,48 @@ func CubeConundrum2() string {
 	}
 
 	return problem.Solve()
+}
+
+func parseGames(input []string) [][]ColorCount {
+	allGames := make([][]ColorCount, len(input))
+
+	for index, game := range input {
+		allGames[index] = parseGame(game)
+	}
+
+	return allGames
+}
+
+func parseGame(line string) []ColorCount {
+	startIndex := strings.Index(line, ": ") + 2
+	line = line[startIndex:]
+	sliced := strings.Split(line, "; ")
+	result := make([]ColorCount, len(sliced))
+
+	for tryIndex, colors := range sliced {
+		pickedColors := strings.Split(colors, ",")
+
+		for _, countAndColor := range pickedColors {
+			countAndColor = strings.TrimLeft(countAndColor, " ")
+
+			countAndColorArr := strings.Split(countAndColor, " ")
+			pickedCount, err := strconv.Atoi(countAndColorArr[0])
+			pickedColor := countAndColorArr[1]
+
+			if err != nil {
+				fmt.Println(err)
+				return nil
+			}
+
+			if pickedColor == "red" {
+				result[tryIndex].Red = pickedCount
+			} else if pickedColor == "blue" {
+				result[tryIndex].Blue = pickedCount
+			} else {
+				result[tryIndex].Green = pickedCount
+			}
+		}
+	}
+
+	return result
 }

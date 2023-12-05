@@ -6,30 +6,6 @@ import (
 	"unicode"
 )
 
-func isSymbol(input rune) bool {
-	return !unicode.IsDigit(input) && input != '.'
-}
-
-func hasSymbolAround(input []string, x int, y1 int, y2 int) bool {
-	isSymbolIndexSafe := func(r int, c int) bool {
-		if r < 0 || r >= len(input) || c < 0 || c >= len(input[r]) {
-			return false
-		}
-
-		return isSymbol(rune(input[r][c]))
-	}
-
-	for _, r := range []int{x - 1, x + 1} {
-		for c := y1 - 1; c <= y2+1; c++ {
-			if isSymbolIndexSafe(r, c) {
-				return true
-			}
-		}
-	}
-
-	return isSymbolIndexSafe(x, y1-1) || isSymbolIndexSafe(x, y2+1)
-}
-
 func GearRatios1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day3/input.txt",
@@ -67,4 +43,28 @@ func GearRatios1() string {
 	}
 
 	return problem.Solve()
+}
+
+func hasSymbolAround(input []string, x int, y1 int, y2 int) bool {
+	isSymbolIndexSafe := func(r int, c int) bool {
+		if r < 0 || r >= len(input) || c < 0 || c >= len(input[r]) {
+			return false
+		}
+
+		return isSymbol(rune(input[r][c]))
+	}
+
+	for _, r := range []int{x - 1, x + 1} {
+		for c := y1 - 1; c <= y2+1; c++ {
+			if isSymbolIndexSafe(r, c) {
+				return true
+			}
+		}
+	}
+
+	return isSymbolIndexSafe(x, y1-1) || isSymbolIndexSafe(x, y2+1)
+}
+
+func isSymbol(input rune) bool {
+	return !unicode.IsDigit(input) && input != '.'
 }

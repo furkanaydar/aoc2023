@@ -16,7 +16,7 @@ type ColorCount struct {
 func CubeConundrum1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day2/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			result := 0
 
 			var ColorMax = map[string]int{
@@ -38,7 +38,7 @@ func CubeConundrum1() string {
 				}
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
@@ -48,7 +48,7 @@ func CubeConundrum1() string {
 func CubeConundrum2() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day2/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			result := 0
 
 			for _, game := range parseGames(input) {
@@ -71,14 +71,14 @@ func CubeConundrum2() string {
 				result += maxCounts.Red * maxCounts.Blue * maxCounts.Green
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
 	return problem.Solve()
 }
 
-func parseGames(input []string) [][]ColorCount {
+func parseGames(input utils.AocStringArray) [][]ColorCount {
 	allGames := make([][]ColorCount, len(input))
 
 	for index, game := range input {
@@ -88,10 +88,10 @@ func parseGames(input []string) [][]ColorCount {
 	return allGames
 }
 
-func parseGame(line string) []ColorCount {
-	startIndex := strings.Index(line, ": ") + 2
+func parseGame(line utils.AocString) []ColorCount {
+	startIndex := line.Index(": ") + 2
 	line = line[startIndex:]
-	sliced := strings.Split(line, "; ")
+	sliced := line.Splitter("; ")
 	result := make([]ColorCount, len(sliced))
 
 	for tryIndex, colors := range sliced {

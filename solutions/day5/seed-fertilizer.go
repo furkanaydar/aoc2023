@@ -3,14 +3,13 @@ package day5
 import (
 	"AdventOfCode2023/solutions/utils"
 	"sort"
-	"strings"
 )
 
 func SeedFertilizer1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day5/input.txt",
-		Solver: func(input []string) string {
-			seeds := convertNumbersStrToNumbersInt(strings.TrimPrefix(input[0], "seeds: "))
+		Solver: func(input utils.AocStringArray) utils.Any {
+			seeds := input[0].NumbersAsInt()
 			seedsRange := make([]Range, len(seeds))
 
 			for index, seed := range seeds {
@@ -27,8 +26,8 @@ func SeedFertilizer1() string {
 func SeedFertilizer2() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day5/input.txt",
-		Solver: func(input []string) string {
-			seeds := convertNumbersStrToNumbersInt(strings.TrimPrefix(input[0], "seeds: "))
+		Solver: func(input utils.AocStringArray) utils.Any {
+			seeds := input[0].NumbersAsInt()
 			seedsRange := make([]Range, len(seeds)/2)
 
 			for i := 0; i < len(seeds); i += 2 {
@@ -42,7 +41,7 @@ func SeedFertilizer2() string {
 	return problem.Solve()
 }
 
-func Solve(input []string, seedsRange RangeGroup) string {
+func Solve(input utils.AocStringArray, seedsRange RangeGroup) int {
 	groups := readConversions(input)
 
 	for _, group := range groups {
@@ -86,7 +85,7 @@ func Solve(input []string, seedsRange RangeGroup) string {
 		}
 	}
 
-	return utils.FromIntToString(result)
+	return result
 }
 
 func applyTransformerToSeedRange(transformerRange SrcDestRange, seedRange Range) Range {
@@ -96,7 +95,7 @@ func applyTransformerToSeedRange(transformerRange SrcDestRange, seedRange Range)
 	}
 }
 
-func readConversions(input []string) []SrcDestRangeGroup {
+func readConversions(input utils.AocStringArray) []SrcDestRangeGroup {
 	var result []SrcDestRangeGroup
 	var currentGroup SrcDestRangeGroup
 
@@ -104,8 +103,8 @@ func readConversions(input []string) []SrcDestRangeGroup {
 		if line == "" {
 			result = append(result, currentGroup)
 			currentGroup = SrcDestRangeGroup{}
-		} else if !strings.Contains(line, "map") {
-			numbers := convertNumbersStrToNumbersInt(line)
+		} else if !line.Contains("map") {
+			numbers := line.NumbersAsInt()
 			currentGroup = append(currentGroup,
 				SrcDestRange{numbers[0], Range{Start: numbers[1], End: numbers[1] + numbers[2] - 1}},
 			)
@@ -113,15 +112,4 @@ func readConversions(input []string) []SrcDestRangeGroup {
 	}
 
 	return append(result, currentGroup)
-}
-
-func convertNumbersStrToNumbersInt(input string) []int {
-	numbersStr := strings.Split(input, " ")
-	numbersInt := make([]int, len(numbersStr))
-
-	for index, val := range numbersStr {
-		numbersInt[index] = utils.FromStringToInt(val)
-	}
-
-	return numbersInt
 }

@@ -9,7 +9,7 @@ import (
 func GearRatios2() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day3/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			stars := make(map[utils.Cell][]int)
 
 			for x, line := range input {
@@ -46,14 +46,14 @@ func GearRatios2() string {
 				}
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
 	return problem.Solve()
 }
 
-func solveForNumber(input []string, x int, y1 int, y2 int, stars map[utils.Cell][]int, actualNumber int) {
+func solveForNumber(input utils.AocStringArray, x int, y1 int, y2 int, stars map[utils.Cell][]int, actualNumber int) {
 	isStar := func(r int, c int) bool {
 		return input[r][c] == '*'
 	}

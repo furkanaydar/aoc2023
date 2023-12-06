@@ -9,7 +9,7 @@ import (
 func GearRatios1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day3/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			result := 0
 
 			for index, line := range input {
@@ -38,14 +38,14 @@ func GearRatios1() string {
 				}
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
 	return problem.Solve()
 }
 
-func hasSymbolAround(input []string, x int, y1 int, y2 int) bool {
+func hasSymbolAround(input utils.AocStringArray, x int, y1 int, y2 int) bool {
 	isSymbolIndexSafe := func(r int, c int) bool {
 		if r < 0 || r >= len(input) || c < 0 || c >= len(input[r]) {
 			return false

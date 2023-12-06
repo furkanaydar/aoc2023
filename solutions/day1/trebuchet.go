@@ -2,13 +2,12 @@ package day1
 
 import (
 	"AdventOfCode2023/solutions/utils"
-	"strings"
 )
 
 func TrebuchetPart1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day1/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			result := 0
 
 			for _, line := range input {
@@ -17,7 +16,7 @@ func TrebuchetPart1() string {
 				result += int(first)*10 + int(last)
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
@@ -27,7 +26,7 @@ func TrebuchetPart1() string {
 func TrebuchetPart2() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day1/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			result := 0
 
 			for _, line := range input {
@@ -36,7 +35,7 @@ func TrebuchetPart2() string {
 				result += int(first)*10 + last
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
@@ -47,12 +46,12 @@ const chars = "0123456789"
 
 var digitTexts = []string{"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 
-func captureFirstDigitIndexFromText(line string) (int, int) {
+func captureFirstDigitIndexFromText(line utils.AocString) (int, int) {
 	minIndex := 100000
 	digit := -1
 
 	for textIndex, text := range digitTexts {
-		index := strings.Index(line, text)
+		index := line.Index(text)
 		if index != -1 && index < minIndex {
 			minIndex = index
 			digit = textIndex
@@ -62,12 +61,12 @@ func captureFirstDigitIndexFromText(line string) (int, int) {
 	return digit, minIndex
 }
 
-func captureLastDigitIndexFromText(line string) (int, int) {
+func captureLastDigitIndexFromText(line utils.AocString) (int, int) {
 	maxIndex := -1
 	digit := -1
 
 	for textIndex, text := range digitTexts {
-		index := strings.LastIndex(line, text)
+		index := line.LastIndex(text)
 		if index != -1 && index > maxIndex {
 			maxIndex = index
 			digit = textIndex
@@ -77,17 +76,17 @@ func captureLastDigitIndexFromText(line string) (int, int) {
 	return digit, maxIndex
 }
 
-func captureFirstDigitIndexFromDigit(line string) (uint8, int) {
-	firstDigitCharacterIndex := strings.IndexAny(line, chars)
+func captureFirstDigitIndexFromDigit(line utils.AocString) (uint8, int) {
+	firstDigitCharacterIndex := line.IndexAny(chars)
 	return line[firstDigitCharacterIndex] - '0', firstDigitCharacterIndex
 }
 
-func captureLastDigitIndexFromDigit(line string) (uint8, int) {
-	lastDigitCharacterIndex := strings.LastIndexAny(line, chars)
+func captureLastDigitIndexFromDigit(line utils.AocString) (uint8, int) {
+	lastDigitCharacterIndex := line.LastIndexAny(chars)
 	return line[lastDigitCharacterIndex] - '0', lastDigitCharacterIndex
 }
 
-func captureFirstDigit(line string) int {
+func captureFirstDigit(line utils.AocString) int {
 	asDigitValue, asDigitIndex := captureFirstDigitIndexFromDigit(line)
 	asTextValue, asTextIndex := captureFirstDigitIndexFromText(line)
 	if asDigitIndex < asTextIndex {
@@ -97,7 +96,7 @@ func captureFirstDigit(line string) int {
 	return asTextValue
 }
 
-func captureLastDigit(line string) int {
+func captureLastDigit(line utils.AocString) int {
 	asDigitValue, asDigitIndex := captureLastDigitIndexFromDigit(line)
 	asTextValue, asTextIndex := captureLastDigitIndexFromText(line)
 

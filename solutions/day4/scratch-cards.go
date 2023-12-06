@@ -10,7 +10,7 @@ import (
 func ScratchCards1() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day4/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			result := 0
 
 			resultCalculator := func(_ int, matches int) {
@@ -20,7 +20,7 @@ func ScratchCards1() string {
 			}
 
 			applyToMatchingNumbersForEveryCard(input, resultCalculator)
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
@@ -30,7 +30,7 @@ func ScratchCards1() string {
 func ScratchCards2() string {
 	problem := utils.Problem{
 		InputFileName: "solutions/day4/input.txt",
-		Solver: func(input []string) string {
+		Solver: func(input utils.AocStringArray) utils.Any {
 			cardCounts := make(map[int]int)
 
 			for i := 1; i <= len(input); i++ {
@@ -51,14 +51,14 @@ func ScratchCards2() string {
 				result += val
 			}
 
-			return utils.FromIntToString(result)
+			return result
 		},
 	}
 
 	return problem.Solve()
 }
 
-func applyToMatchingNumbersForEveryCard(inputLines []string, calculate func(int, int)) {
+func applyToMatchingNumbersForEveryCard(inputLines utils.AocStringArray, calculate func(int, int)) {
 	for index, line := range inputLines {
 		selectedNumbers, winningNumbers := getSelectedAndWinningNumbers(line)
 		winningNumberSet := make(map[int]bool)
@@ -79,9 +79,9 @@ func applyToMatchingNumbersForEveryCard(inputLines []string, calculate func(int,
 	}
 }
 
-func getSelectedAndWinningNumbers(line string) ([]int, []int) {
-	numbersStartingAt := strings.Index(line, ": ") + 2
-	numbers := strings.Split(line[numbersStartingAt:], "|")
+func getSelectedAndWinningNumbers(line utils.AocString) ([]int, []int) {
+	numbersStartingAt := line.Index(": ") + 2
+	numbers := line[numbersStartingAt:].Splitter("|")
 	selectedNumbersFiltered := filterNumbers(strings.Split(numbers[0], " "))
 	winningNumbersFiltered := filterNumbers(strings.Split(numbers[1], " "))
 	return selectedNumbersFiltered, winningNumbersFiltered

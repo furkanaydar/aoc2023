@@ -6,54 +6,48 @@ import (
 	"unicode"
 )
 
-func GearRatios2() string {
-	problem := utils.Problem{
-		InputFileName: "solutions/day3/input.txt",
-		Solver: func(input utils.AocStringArray) utils.Any {
-			stars := make(map[utils.Cell][]int)
+func GearRatios2() int {
+	input := utils.NewProblem("solutions/day3/input.txt").InputAsLines()
+	stars := make(map[utils.Cell][]int)
 
-			for x, line := range input {
-				for y := 0; y < len(line); y++ {
-					if unicode.IsDigit(rune(line[y])) {
-						it := y
-						var numberStr string
+	for x, line := range input {
+		for y := 0; y < len(line); y++ {
+			if unicode.IsDigit(rune(line[y])) {
+				it := y
+				var numberStr string
 
-						for it < len(line) && unicode.IsDigit(rune(line[it])) {
-							numberStr += string(line[it])
-							it++
-						}
-
-						actualNumber, err := strconv.Atoi(numberStr)
-
-						if err == nil {
-							solveForNumber(input, x, y, it-1, stars, actualNumber)
-						}
-
-						y = it
-					}
+				for it < len(line) && unicode.IsDigit(rune(line[it])) {
+					numberStr += string(line[it])
+					it++
 				}
-			}
 
-			result := 0
+				actualNumber, err := strconv.Atoi(numberStr)
 
-			for key := range stars {
-				if len(stars[key]) > 1 {
-					ratio := 1
-					for _, val := range stars[key] {
-						ratio *= val
-					}
-					result += ratio
+				if err == nil {
+					solveForNumber(input, x, y, it-1, stars, actualNumber)
 				}
-			}
 
-			return result
-		},
+				y = it
+			}
+		}
 	}
 
-	return problem.Solve()
+	result := 0
+
+	for key := range stars {
+		if len(stars[key]) > 1 {
+			ratio := 1
+			for _, val := range stars[key] {
+				ratio *= val
+			}
+			result += ratio
+		}
+	}
+
+	return result
 }
 
-func solveForNumber(input utils.AocStringArray, x int, y1 int, y2 int, stars map[utils.Cell][]int, actualNumber int) {
+func solveForNumber(input utils.StringArray, x int, y1 int, y2 int, stars map[utils.Cell][]int, actualNumber int) {
 	isStar := func(r int, c int) bool {
 		return input[r][c] == '*'
 	}

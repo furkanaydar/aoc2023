@@ -5,43 +5,31 @@ import (
 	"sort"
 )
 
-func SeedFertilizer1() string {
-	problem := utils.Problem{
-		InputFileName: "solutions/day5/input.txt",
-		Solver: func(input utils.AocStringArray) utils.Any {
-			seeds := input[0].NumbersAsInt()
-			seedsRange := make([]Range, len(seeds))
+func SeedFertilizer1() int {
+	input := utils.NewProblem("solutions/day5/input.txt").InputAsLines()
+	seeds := input[0].NumbersAsInt()
+	seedsRange := make([]Range, len(seeds))
 
-			for index, seed := range seeds {
-				seedsRange[index] = Range{Start: seed, End: seed}
-			}
-
-			return Solve(input, seedsRange)
-		},
+	for index, seed := range seeds {
+		seedsRange[index] = Range{Start: seed, End: seed}
 	}
 
-	return problem.Solve()
+	return Solve(input, seedsRange)
 }
 
-func SeedFertilizer2() string {
-	problem := utils.Problem{
-		InputFileName: "solutions/day5/input.txt",
-		Solver: func(input utils.AocStringArray) utils.Any {
-			seeds := input[0].NumbersAsInt()
-			seedsRange := make([]Range, len(seeds)/2)
+func SeedFertilizer2() int {
+	input := utils.NewProblem("solutions/day5/input.txt").InputAsLines()
+	seeds := input[0].NumbersAsInt()
+	seedsRange := make([]Range, len(seeds)/2)
 
-			for i := 0; i < len(seeds); i += 2 {
-				seedsRange[i/2] = Range{Start: seeds[i], End: seeds[i] + seeds[i+1]}
-			}
-
-			return Solve(input, seedsRange)
-		},
+	for i := 0; i < len(seeds); i += 2 {
+		seedsRange[i/2] = Range{Start: seeds[i], End: seeds[i] + seeds[i+1]}
 	}
 
-	return problem.Solve()
+	return Solve(input, seedsRange)
 }
 
-func Solve(input utils.AocStringArray, seedsRange RangeGroup) int {
+func Solve(input utils.StringArray, seedsRange RangeGroup) int {
 	groups := readConversions(input)
 
 	for _, group := range groups {
@@ -95,7 +83,7 @@ func applyTransformerToSeedRange(transformerRange SrcDestRange, seedRange Range)
 	}
 }
 
-func readConversions(input utils.AocStringArray) []SrcDestRangeGroup {
+func readConversions(input utils.StringArray) []SrcDestRangeGroup {
 	var result []SrcDestRangeGroup
 	var currentGroup SrcDestRangeGroup
 

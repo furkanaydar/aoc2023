@@ -4,61 +4,47 @@ import (
 	"AdventOfCode2023/solutions/utils"
 )
 
-func WaitForIt1() string {
-	problem := utils.Problem{
-		InputFileName: "solutions/day6/input.txt",
-		Solver: func(input utils.AocStringArray) utils.Any {
-			times := input[0].NumbersAsInt()
-			distances := input[1].NumbersAsInt()
-			result := 1
+func WaitForIt1() int {
+	input := utils.NewProblem("solutions/day6/input.txt").InputAsLines()
+	times := input[0].NumbersAsInt()
+	distances := input[1].NumbersAsInt()
+	result := 1
 
-			for index, time := range times {
-				count := 0
-				for i := 1; i <= time-1; i++ {
-					if (time-i)*i > distances[index] {
-						count++
-					}
-				}
-
-				result *= count
+	for index, time := range times {
+		count := 0
+		for i := 1; i <= time-1; i++ {
+			if (time-i)*i > distances[index] {
+				count++
 			}
+		}
 
-			return result
-		},
+		result *= count
 	}
 
-	return problem.Solve()
+	return result
 }
 
-func WaitForIt2() string {
+func WaitForIt2() int {
+	input := utils.NewProblem("solutions/day6/input.txt").InputAsLines()
+	times := []int{readLineNumber(input[0])}
+	distances := []int{readLineNumber(input[1])}
+	result := 1
 
-	problem := utils.Problem{
-		InputFileName: "solutions/day6/input.txt",
-		Solver: func(input utils.AocStringArray) utils.Any {
-
-			times := []int{readLineNumber(input[0])}
-			distances := []int{readLineNumber(input[1])}
-			result := 1
-
-			for index, time := range times {
-				count := 0
-				for i := 1; i <= time-1; i++ {
-					if (time-i)*i > distances[index] {
-						count++
-					}
-				}
-
-				result *= count
+	for index, time := range times {
+		count := 0
+		for i := 1; i <= time-1; i++ {
+			if (time-i)*i > distances[index] {
+				count++
 			}
+		}
 
-			return result
-		},
+		result *= count
 	}
 
-	return problem.Solve()
+	return result
 }
 
-func readLineNumber(input utils.AocString) int {
+func readLineNumber(input utils.String) int {
 	elems := input.SeparatedBySpace()
 	result := ""
 
@@ -66,5 +52,5 @@ func readLineNumber(input utils.AocString) int {
 		result += string(toAdd)
 	}
 
-	return utils.AocString(result).ToIntOrDefault(-1)
+	return utils.String(result).ToIntOrDefault(-1)
 }

@@ -78,11 +78,33 @@ func (input String) NumbersAsInt() []int {
 	return input.NumbersAsStrings().ToIntArr()
 }
 
+func (input String) GetIndexesOf(find rune) []int {
+	var result []int
+
+	for i, ch := range input {
+		if ch == find {
+			result = append(result, i)
+		}
+	}
+
+	return result
+}
+
 func (input String) SeparatedBySpace() StringArray {
 
 	regex := regexp.MustCompile(`\s+`)
 	spacesFormatted := regex.ReplaceAllString(strings.TrimLeft(string(input), " "), " ")
 	split := strings.Split(spacesFormatted, " ")
+	result := make(StringArray, len(split))
+	for index, val := range split {
+		result[index] = String(val)
+	}
+
+	return result
+}
+
+func (input String) SeparatedByComma() StringArray {
+	split := strings.Split(string(input), ",")
 	result := make(StringArray, len(split))
 	for index, val := range split {
 		result[index] = String(val)
@@ -175,8 +197,8 @@ func (input StringArray) ToIntArr() []int {
 func (input StringArray) ToMatrix() Matrix {
 	var result Matrix
 
-	for index, line := range input {
-		result[index] = Row(line)
+	for _, line := range input {
+		result = append(result, Row(line))
 	}
 
 	return result

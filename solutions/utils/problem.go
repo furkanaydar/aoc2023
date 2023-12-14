@@ -29,8 +29,8 @@ func (problem Problem) InputAsLines() StringArray {
 func (problem Problem) InputAsMatrix() Matrix {
 	var result Matrix
 
-	for index, line := range problem.InputLines {
-		result[index] = Row(line)
+	for _, line := range problem.InputLines {
+		result = append(result, Row(line))
 	}
 
 	return result

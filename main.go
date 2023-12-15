@@ -1,7 +1,7 @@
 package main
 
 import (
-	"AdventOfCode2023/solutions/day12"
+	"AdventOfCode2023/solutions/day15"
 	"fmt"
 )
 
@@ -26,5 +26,5 @@ func main() {
 	//fmt.Println(day6.WaitForIt1())
 	//fmt.Println(day6.WaitForIt2())
 
-	fmt.Println(day12.HotSprings1())
+	fmt.Println(day15.LensLibrary2())
 }
